@@ -3,17 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.terradue.ciop.app</groupId>
-	<artifactId>seadas-meris-ac</artifactId>
+	<artifactId>Participant-E</artifactId>
 	<packaging>rpm</packaging>
-	<name>seadas-meris-ac</name>
-	<description>seadas-meris-ac</description>
+	<name>Participant-E</name>
+	<description>SEADAS with NCEP ancillary data</description>
 	<version>0.1</version>
 
 
 	<scm>
-		<connection>scm:git:git@github.com:ocean-color-ac-challenge/seadas-meris-ac.git</connection>
-		<developerConnection>scm:git:git@github.com:ocean-color-ac-challenge/seadas-meris-ac.git</developerConnection>
-		<url>https://github.com/ocean-color-ac-challenge/seadas-meris-ac</url>
+		<connection>scm:git:git@github.com:ocean-color-ac-challenge/Participant-E.git</connection>
+		<developerConnection>scm:git:git@github.com:ocean-color-ac-challenge/Participant-E.git</developerConnection>
+		<url>https://github.com/ocean-color-ac-challenge/Participant-E</url>
 		<tag>HEAD</tag>
 	</scm>
 
