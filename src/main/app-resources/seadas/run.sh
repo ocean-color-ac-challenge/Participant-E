@@ -48,6 +48,9 @@ myInput="$TMPDIR/input"
 myOutput="$TMPDIR/output"
 mkdir -p $myInput $myOutput
 
+ncepUrl="http://oceandata.sci.gsfc.nasa.gov/cgi/getfile"
+
+
 par=`ciop-getparam "par"`
 
 while read input
@@ -69,9 +72,24 @@ ofile=$l2output
 
 $par
 EOF
+
+	# get NCEP data 
+	l2b=`basename $l2output`
+	julian=`date -d "${l2b:14:4}-${l2b:18:2}-${l2b:20:2}" +%j`
+	year=${l2b:14:4}
 	
+	met1Url="$ncepUrl/S${year}${julian}06_NCEP.MET"
+	met2Url="$ncepUrl/S${year}${julian}12_NCEP.MET"
+	met3Url="$ncepUrl/S${year}${julian}18_NCEP.MET"
+
+	wget -P $myInput/ $met1Url $met2Url $met3Url 	
+
 	ciop-log "INFO" "Starting seaDAS processor"
-	$PATH_TO_SEADAS/ocssw/run/bin/l2gen par="$seadaspar"
+	$PATH_TO_SEADAS/ocssw/run/bin/l2gen par="$seadaspar" \
+		met1=$myInput/S${year}${julian}06_NCEP.MET \
+		met2=$myInput/S${year}${julian}12_NCEP.MET \
+		met3=$myInput/S${year}${julian}18_NCEP.MET  
+
 	[ $? != 0 ] && exit $ERR_SEADAS
 
 	ciop-log "INFO" "Conversion to BEAM-DIMAP format"
