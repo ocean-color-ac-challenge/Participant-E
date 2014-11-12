@@ -78,17 +78,18 @@ EOF
 	julian=`date -d "${l2b:14:4}-${l2b:18:2}-${l2b:20:2}" +%j`
 	year=${l2b:14:4}
 	
-	met1Url="$ncepUrl/S${year}${julian}06_NCEP.MET"
-	met2Url="$ncepUrl/S${year}${julian}12_NCEP.MET"
-	met3Url="$ncepUrl/S${year}${julian}18_NCEP.MET"
+	met1="S${year}${julian}12_NCEP.MET"
+	met2="S${year}${julian}18_NCEP.MET"
+	julian=`echo "$julian + 1" | bc | xargs printf "%03d"`
+	met3="S${year}${julian}00_NCEP.MET"
 
-	wget -P $myInput/ $met1Url $met2Url $met3Url 	
+	wget -P $myInput/ $ncepUrl/$met1 $ncepUrl/$met2 $ncepUrl/$met3 	
 
 	ciop-log "INFO" "Starting seaDAS processor"
 	$PATH_TO_SEADAS/ocssw/run/bin/l2gen par="$seadaspar" \
-		met1=$myInput/S${year}${julian}06_NCEP.MET \
-		met2=$myInput/S${year}${julian}12_NCEP.MET \
-		met3=$myInput/S${year}${julian}18_NCEP.MET  
+		met1=$myInput/$met1 \
+		met2=$myInput/$met2 \
+		met3=$myInput/$met3  
 
 	[ $? != 0 ] && exit $ERR_SEADAS
 
