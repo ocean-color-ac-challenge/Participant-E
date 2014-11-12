@@ -77,19 +77,52 @@ EOF
 	l2b=`basename $l2output`
 	julian=`date -d "${l2b:14:4}-${l2b:18:2}-${l2b:20:2}" +%j`
 	year=${l2b:14:4}
-	
-	met1="S${year}${julian}12_NCEP.MET"
-	met2="S${year}${julian}18_NCEP.MET"
-	julian=`echo "$julian + 1" | bc | xargs printf "%03d"`
-	met3="S${year}${julian}00_NCEP.MET"
+	hour=`echo ${l2b:23:2} | bc`
 
-	wget -P $myInput/ $ncepUrl/$met1 $ncepUrl/$met2 $ncepUrl/$met3 	
+((hour>=0 && hour<6)) && {
+	met1=N${year}${julian}00_MET_NCEPN_6h.hdf
+	met2=N${year}${julian}06_MET_NCEPN_6h.hdf
+}
+
+
+((hour>=6 && hour<12)) && {
+	met1=N${year}${julian}06_MET_NCEPN_6h.hdf
+        met2=N${year}${julian}12_MET_NCEPN_6h.hdf
+}
+
+((hour>=12 && hour<18)) && {
+        met1=N${year}${julian}12_MET_NCEPN_6h.hdf
+        met2=N${year}${julian}18_MET_NCEPN_6h.hdf
+}
+
+((hour>=18 && hour<=23)) && {
+        met1=N${year}${julian}18_MET_NCEPN_6h.hdf
+	julian1=`echo "$julian + 1" | bc | xargs printf "%03d"`
+        met2=N${year}${julian1}00_MET_NCEPN_6h.hdf
+}
+	met3=$met2
+	
+	echo "$met1 $met2" | tr " " "\n" | while read met
+	do 
+		wget -P $myInput/ $ncepUrl/$met.bz2 
+		bunzip2 $myInput/$met.bz2
+		rm -f $myInput/$met.bz2
+	done
+
+	O31=N${year}${julian}00_O3_TOMSOMI_24h.hdf
+	O32=N${year}${julian1}00_O3_TOMSOMI_24h.hdf	
+	O33=$O32
+
+	wget -P $myInput/ $ncepUrl/$O31 $ncepUrl/$O32
 
 	ciop-log "INFO" "Starting seaDAS processor"
 	$PATH_TO_SEADAS/ocssw/run/bin/l2gen par="$seadaspar" \
 		met1=$myInput/$met1 \
 		met2=$myInput/$met2 \
-		met3=$myInput/$met3  
+		met3=$myInput/$met3 \
+		ozone1=$myInput/$O31 \
+		ozone2=$myInput/$O32 \
+		ozone3=$myInput/$O33
 
 	[ $? != 0 ] && exit $ERR_SEADAS
 
