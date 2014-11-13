@@ -58,7 +58,7 @@ do
 	#getting the input
 	ciop-log "INFO" "Working with MERIS product $input"
 
-	n1input=`ciop-copy -o $myInput $input`
+	n1input="`opensearch-client "$input" enclosure | ciop-copy -o $myInput -`"
 	[ $? != 0 ] && exit $ERR_NOINPUT
 	
 	#preparing the processor run
