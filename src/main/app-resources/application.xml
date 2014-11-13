@@ -7,19 +7,19 @@
         <parameter id="starttime" title="Start Time" abstract="Start Time to query the Catalogue" scope="runtime" type="opensearch" target="time:start" />
         <parameter id="enddate" title="End time" abstract="End time to query the Catalogue" scope="runtime" type="opensearch" target="time:end" />
         <parameter id="bbox" title="Bounding Box" abstract="Bounding Box to query the Catalogue" scope="runtime" type="opensearch" target="geo:box" />
-        <parameter id="par" title="Input parameter file to be used for l2gen processing" abstract="Input parameter file to be used for l2gen processing except ifile and ofile" scope="runtime"/>
+        <parameter id="par" title="Input parameter file to be used for l2gen processing" abstract="Input parameter file to be used for l2gen processing except ifile and ofile" scope="test"/>
       </defaultParameters>
       <defaultJobconf>
         <property id="mapred.task.timeout">9900000000000</property>
       </defaultJobconf>
     </jobTemplate>
   </jobTemplates>
-  <workflow id="wf_seadas" title="Seadas Ocean Color" abstract="Ocean color atmospheric correction using Seadas">
+  <workflow id="participant-e" title="Participant E" abstract="Participant E - Ocean color atmospheric correction using Seadas with NCEP/O3">
     <workflowVersion>1.0</workflowVersion>
     <node id="node_seadas">
       <job id="seadas" />
       <sources>
-        <source id="data" refid="cas:series">https://challenges.esa.int/eceo/datapackage/RRPAR/search?key=9d79148d-3e17-414b-9983-e4cef9e88ec6&amp;format=rdf</source>
+        <source id="data" title="Data package URL" abstract="Data package OpenSearch Description Document URL" scope="runtime"  refid="cas:series">https://challenges.esa.int/eceo/datapackage/RRPAR/description?key=9d79148d-3e17-414b-9983-e4cef9e88ec6</source>
       </sources>
       <parameters>
       	<parameter id="starttime">2002-04-05</parameter>
