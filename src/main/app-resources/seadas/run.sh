@@ -131,7 +131,7 @@ EOF
   [ $? -ne 0 ] && exit ${ERR_PCONVERT}
 
   # create RGB quicklook
-  outputname=$( basename ${l2output} | sed 's#\.dim##g' )
+  outputname=$( basename ${l2output} | sed 's#\.L2##g' )
   ${PATH_TO_SEADAS}/bin/pconvert.sh \
     -f png \
     -p ${_CIOP_APPLICATION_PATH}/seadas/etc/profile.rgb \
