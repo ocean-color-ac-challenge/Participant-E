@@ -19,12 +19,12 @@ function cleanExit ()
   local retval=$?
   local msg=""
   case "${retval}" in
-    $SUCCESS)   msg="Processing successfully concluded";;
-    $ERR_NOINPUT)  msg="Input not retrieved to local node";;
-    $ERR_SEADAS)  msg="seaDAS l2gen returned an error";;
-    $ERR_PCONVERT)  msg="Conversion to BEAM-DIMAP failed";;
-    $ERR_TAR)  msg="Compression of BEAM-DIMAP failed";;
-    $ERR_JAVAVERSION) msg="The version of the JVM must be at least 1.7";;
+    ${SUCCESS})   msg="Processing successfully concluded";;
+    ${ERR_NOINPUT})  msg="Input not retrieved to local node";;
+    ${ERR_SEADAS})  msg="seaDAS l2gen returned an error";;
+    ${ERR_PCONVERT})  msg="Conversion to BEAM-DIMAP failed";;
+    ${ERR_TAR})  msg="Compression of BEAM-DIMAP failed";;
+    ${ERR_JAVAVERSION}) msg="The version of the JVM must be at least 1.7";;
     *)    msg="Unknown error";;
   esac
 
@@ -100,35 +100,46 @@ EOF
   julian1=$( echo "$julian + 1" | bc | xargs printf "%03d" )
         met2=N${year}${julian1}00_MET_NCEPN_6h.hdf
 }
-  met3=$met2
+  met3=${met2}
   
-  echo "$met1 $met2" | tr " " "\n" | while read met
+  echo "${met1} ${met2}" | tr " " "\n" | while read met
   do 
-    wget -P ${myInput}/ $ncepUrl/$met.bz2 
+    wget -P ${myInput}/ ${ncepUrl}/$met.bz2 
     bunzip2 ${myInput}/$met.bz2
     rm -f ${myInput}/$met.bz2
   done
 
   O31=N${year}${julian}00_O3_TOMSOMI_24h.hdf
   O32=N${year}${julian1}00_O3_TOMSOMI_24h.hdf  
-  O33=$O32
+  O33=${O32}
 
-  wget -P ${myInput}/ $ncepUrl/$O31 $ncepUrl/$O32
+  wget -P ${myInput}/ ${ncepUrl}/${O31} ${ncepUrl}/${O32}
 
   ciop-log "INFO" "Starting seaDAS processor"
   ${PATH_TO_SEADAS}/ocssw/run/bin/l2gen par="${seadaspar}" \
-    met1=${myInput}/$met1 \
-    met2=${myInput}/$met2 \
-    met3=${myInput}/$met3 \
-    ozone1=${myInput}/$O31 \
-    ozone2=${myInput}/$O32 \
-    ozone3=${myInput}/$O33
+    met1=${myInput}/${met1} \
+    met2=${myInput}/${met2} \
+    met3=${myInput}/${met3} \
+    ozone1=${myInput}/${O31} \
+    ozone2=${myInput}/${O32} \
+    ozone3=${myInput}/${O33}
 
-  [ $? -ne 0 ] && exit $ERR_SEADAS
+  [ $? -ne 0 ] && exit ${ERR_SEADAS}
 
   ciop-log "INFO" "Conversion to BEAM-DIMAP format"
   ${PATH_TO_SEADAS}/bin/pconvert.sh --outdir ${myOutput} ${l2output} 
-  [ $? -ne 0 ] && exit $ERR_PCONVERT
+  [ $? -ne 0 ] && exit ${ERR_PCONVERT}
+
+  # create RGB quicklook
+  outputname=$( basename ${l2output} | sed 's#\.dim##g' )
+  ${PATH_TO_SEADAS}/bin/pconvert.sh \
+    -f png \
+    -p ${_CIOP_APPLICATION_PATH}/seadas/etc/profile.rgb \
+    -o ${myOutput} \
+    ${myOutput}/${outputname}.dim
+
+  ciop-log "INFO" "Publishing png"
+  ciop-publish -m ${myOutput}/${outputname}.png
 
   [ "${pixex}" == "true" ] && {
     # get the POIs
@@ -172,7 +183,6 @@ EOF
       rm -f "${myOutput}/${l2b}.txt"
     }
   }
-
 
   ciop-log "INFO" "Compressing results"
   tar -C ${myOutput} -cvzf ${myOutput}/$( basename ${l2output} ).tgz \

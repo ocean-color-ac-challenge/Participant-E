@@ -26,8 +26,8 @@
         <source id="data" title="Data package URL" abstract="Data package OpenSearch Description Document URL" scope="runtime"  refid="cas:series">https://challenges.esa.int/eceo/datapackage/RRPAR/description?key=9d79148d-3e17-414b-9983-e4cef9e88ec6</source>
       </sources>
       <parameters>
-      	<parameter id="starttime">2002-04-05</parameter>
-      	<parameter id="enddate">2005-01-06</parameter>
+        <parameter id="starttime">2002-03-01</parameter>
+        <parameter id="enddate">2012-05-09</parameter>
       	<parameter id="bbox">-180,90,180,-90</parameter>
       	<parameter id="par"><![CDATA[
 # SUITE
