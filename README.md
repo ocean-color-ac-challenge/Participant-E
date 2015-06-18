@@ -44,7 +44,7 @@ Select java 1.7 out of the menu options by typing the correct number (here it's 
 ```bash
 cd
 git clone git@github.com:ocean-color-ac-challenge/Participant-E.git
-cd Participant-D
+cd Participant-E
 mvn install
 ```
 
