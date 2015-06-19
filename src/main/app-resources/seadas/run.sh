@@ -130,17 +130,6 @@ EOF
   ${PATH_TO_SEADAS}/bin/pconvert.sh --outdir ${myOutput} ${l2output} 
   [ $? -ne 0 ] && exit ${ERR_PCONVERT}
 
-  # create RGB quicklook
-  outputname=$( basename ${l2output} | sed 's#\.L2##g' )
-  ${PATH_TO_SEADAS}/bin/pconvert.sh \
-    -f png \
-    -p ${_CIOP_APPLICATION_PATH}/seadas/etc/profile.rgb \
-    -o ${myOutput} \
-    ${myOutput}/${outputname}.dim
-
-  ciop-log "INFO" "Publishing png"
-  ciop-publish -m ${myOutput}/${outputname}.png
-
   [ "${pixex}" == "true" ] && {
     # get the POIs
     echo -e "Name\tLatitude\tLongitude" > ${TMPDIR}/poi.csv
@@ -184,15 +173,28 @@ EOF
     }
   }
 
-  ciop-log "INFO" "Compressing results"
-  tar -C ${myOutput} -cvzf ${myOutput}/$( basename ${l2output} ).tgz \
-      $( basename ${l2output} | sed 's#\.L2$#.dim#g' ) \
-       $( basename ${l2output} | sed 's#\.L2$#.data#g' )
-  [ $? -ne 0 ] && exit $ERR_TAR  
+  [ "${publish_l2}" == "true" ] && {
+    # create RGB quicklook
+    outputname=$( basename ${l2output} | sed 's#\.L2##g' )
+    ${PATH_TO_SEADAS}/bin/pconvert.sh \
+      -f png \
+      -p ${_CIOP_APPLICATION_PATH}/seadas/etc/profile.rgb \
+      -o ${myOutput} \
+      ${myOutput}/${outputname}.dim
 
-  #publishing the output
-  ciop-log "INFO" "Publishing $( basename ${l2output} ).tgz"
-  ciop-publish -m ${myOutput}/$( basename ${l2output} ).tgz
+    ciop-log "INFO" "Publishing png"
+    ciop-publish -m ${myOutput}/${outputname}.png
+
+    ciop-log "INFO" "Compressing results"
+    tar -C ${myOutput} -cvzf ${myOutput}/$( basename ${l2output} ).tgz \
+      $( basename ${l2output} | sed 's#\.L2$#.dim#g' ) \
+      $( basename ${l2output} | sed 's#\.L2$#.data#g' )
+    [ $? -ne 0 ] && exit $ERR_TAR  
+
+    #publishing the output
+    ciop-log "INFO" "Publishing $( basename ${l2output} ).tgz"
+    ciop-publish -m ${myOutput}/$( basename ${l2output} ).tgz
+}
   
   rm -rf ${myInput}/*
   rm -rf ${myOutput}/*
