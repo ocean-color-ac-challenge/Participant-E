@@ -50,8 +50,9 @@ mkdir -p ${myInput} ${myOutput}
 
 ncepUrl="http://oceandata.sci.gsfc.nasa.gov/cgi/getfile"
 
-pixex=$( ciop-getparam "pixex" )
-par=$( ciop-getparam "par" )
+pixex="$( ciop-getparam pixex )"
+par="$( ciop-getparam par )"
+publish_l2="$( ciop-getparam publish_l2 )"
 
 while read input
 do
