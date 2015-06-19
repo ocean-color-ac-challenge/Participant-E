@@ -58,9 +58,20 @@ do
   #getting the input
   ciop-log "INFO" "Working with MERIS product $input"
 
-  n1input="$( opensearch-client "$input" enclosure | ciop-copy -o ${myInput} - )"
+  case "${input:0:4}" in
+    "file"|"s3:/")
+      n1input="$( echo "${input}" | ciop-copy -o "${myInput}" - )"
+    ;;
+    "http")
+      n1input="$( opensearch-client "$input" enclosure | ciop-copy -o ${myInput} - )"
+    ;;
+    *)
+      exit $ERR_NOINPUT
+    ;;
+  esac
+
   [ $? -ne 0 ] && exit $ERR_NOINPUT
-  
+
   #preparing the processor run
   l2output="${myOutput}/$( basename ${n1input} | sed 's#\.N1$#.L2#g' )"
   seadaspar="${myOutput}/$( basename ${n1input} | sed 's#\.N1$#.par#g' )"
@@ -76,6 +87,7 @@ EOF
   # get NCEP data 
   l2b=$( basename ${l2output} )
   julian=$( date -d "${l2b:14:4}-${l2b:18:2}-${l2b:20:2}" +%j )
+  julian1=$julian
   year=${l2b:14:4}
   hour=$( echo ${l2b:23:2} | bc )
 
