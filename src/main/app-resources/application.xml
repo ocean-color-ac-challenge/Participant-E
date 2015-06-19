@@ -24,7 +24,7 @@
     <node id="node_seadas">
       <job id="seadas" />
       <sources>
-        <source id="data" title="Data package URL" abstract="Data package OpenSearch Description Document URL" scope="runtime"  refid="cas:series">https://challenges.esa.int/eceo/datapackage/RRPAR/description?key=9d79148d-3e17-414b-9983-e4cef9e88ec6</source>
+        <source id="data" title="Data package URL" abstract="Data package OpenSearch Description Document URL" scope="runtime"  refid="cas:series">https://challenges.esa.int/eceo/data/package/RRPAR/description?key=9d79148d-3e17-414b-9983-e4cef9e88ec6</source>
       </sources>
       <parameters>
         <parameter id="starttime">2002-03-01</parameter>
