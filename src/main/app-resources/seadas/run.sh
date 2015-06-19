@@ -92,27 +92,27 @@ EOF
   year=${l2b:14:4}
   hour=$( echo ${l2b:23:2} | bc )
 
-((hour>=0 && hour<6)) && {
-  met1=N${year}${julian}00_MET_NCEPN_6h.hdf
-  met2=N${year}${julian}06_MET_NCEPN_6h.hdf
-}
+  ((hour>=0 && hour<6)) && {
+    met1=N${year}${julian}00_MET_NCEPN_6h.hdf
+    met2=N${year}${julian}06_MET_NCEPN_6h.hdf
+  }
 
+  ((hour>=6 && hour<12)) && {
+    met1=N${year}${julian}06_MET_NCEPN_6h.hdf
+    met2=N${year}${julian}12_MET_NCEPN_6h.hdf
+  }
 
-((hour>=6 && hour<12)) && {
-  met1=N${year}${julian}06_MET_NCEPN_6h.hdf
-        met2=N${year}${julian}12_MET_NCEPN_6h.hdf
-}
+  ((hour>=12 && hour<18)) && {
+    met1=N${year}${julian}12_MET_NCEPN_6h.hdf
+    met2=N${year}${julian}18_MET_NCEPN_6h.hdf
+  }
 
-((hour>=12 && hour<18)) && {
-        met1=N${year}${julian}12_MET_NCEPN_6h.hdf
-        met2=N${year}${julian}18_MET_NCEPN_6h.hdf
-}
-
-((hour>=18 && hour<=23)) && {
-        met1=N${year}${julian}18_MET_NCEPN_6h.hdf
-  julian1=$( echo "$julian + 1" | bc | xargs printf "%03d" )
-        met2=N${year}${julian1}00_MET_NCEPN_6h.hdf
-}
+  ((hour>=18 && hour<=23)) && {
+    met1=N${year}${julian}18_MET_NCEPN_6h.hdf
+    julian1=$( echo "$julian + 1" | bc | xargs printf "%03d" )
+    met2=N${year}${julian1}00_MET_NCEPN_6h.hdf
+  }
+  
   met3=${met2}
   
   echo "${met1} ${met2}" | tr " " "\n" | while read met
@@ -207,7 +207,7 @@ EOF
     #publishing the output
     ciop-log "INFO" "Publishing $( basename ${l2output} ).tgz"
     ciop-publish -m ${myOutput}/$( basename ${l2output} ).tgz
-}
+  }
   
   rm -rf ${myInput}/*
   rm -rf ${myOutput}/*
