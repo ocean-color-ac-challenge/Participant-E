@@ -92,12 +92,25 @@ Invoke the application via the Dashboard with the parameters listed in the test 
 | End Time     | 2012-05-09T23:59:59Z |
 | Bounding Box | -180,90,180,-90 |
 | List of POI for reflectance extraction |BOUS,43.367,7.9\|AAOT,45.314,12.508\|MOBY,20.828,-157.193 |
+| Flag to trigger the publishing of Level 2 products generated | true |
 | Flag to extract POI reflectances | false |
 
 * Outputs specification
 
 | Output                                                             | Size |
 |--------------------------------------------------------------------|------|
+|MER_RR__1PNACR20060730_093546_000021432049_00480_23079_0000.L2.tgz|143.03 MB|
+|MER_RR__1PNACR20060730_093546_000021432049_00480_23079_0000.png|2.15 MB|
+|MER_RR__1PRACR20030306_201313_000026082014_00243_05307_0000.L2.tgz|227.09 MB|
+|MER_RR__1PRACR20030306_201313_000026082014_00243_05307_0000.png|6.07 MB|
+|MER_RR__1PRACR20040903_201756_000026282030_00057_13137_0000.L2.tgz|236.94 MB|
+|MER_RR__1PRACR20040903_201756_000026282030_00057_13137_0000.png|6.8 MB|
+|MER_RR__1PRACR20050504_093419_000026382037_00022_16609_0000.L2.tgz|179.94 MB|
+|MER_RR__1PRACR20050504_093419_000026382037_00022_16609_0000.png|3.11 MB|
+|MER_RR__1PRACR20070920_092716_000026302061_00437_29048_0000.L2.tgz|163.93 MB|
+|MER_RR__1PRACR20070920_092716_000026302061_00437_29048_0000.png|2.4 MB|
+|MER_RR__1PRACR20080816_092020_000026302071_00165_33786_0000.L2.tgz|175.45 MB|
+|MER_RR__1PRACR20080816_092020_000026302071_00165_33786_0000.png|2.85 MB|
 
 * Test pass/fail criteria
 
@@ -118,12 +131,17 @@ Invoke the application via the Dashboard with the parameters listed in the test 
 | End Time     | 2012-05-09T23:59:59Z |
 | Bounding Box | -180,90,180,-90 |
 | List of POI for reflectance extraction |CHINA,27,122\|CHINA2,30,124\|CHINA3,22,126 |
+| Flag to trigger the publishing of Level 2 products generated | true |
 | Flag to extract POI reflectances | false |
 
 * Outputs specification
 
 | Output                                                             | Size |
 |--------------------------------------------------------------------|------|
+|MER_FRS_1PPEPA20040711_020449_000002422028_00275_12353_1787.L2.tgz|471.72 MB|
+|MER_FRS_1PPEPA20040711_020449_000002422028_00275_12353_1787.png|18.97 MB|
+|MER_FRS_1PPEPA20040717_021529_000002642028_00361_12439_1968.L2.tgz|335.36 MB|
+|MER_FRS_1PPEPA20040717_021529_000002642028_00361_12439_1968.png|12.61 MB|
 
 * Test pass/fail criteria
 
@@ -144,12 +162,19 @@ Invoke the application via the Dashboard with the parameters listed in the test 
 | End Time     | 2012-05-09T23:59:59Z |
 | Bounding Box | -180,90,180,-90 |
 | List of POI for reflectance extraction |BOUS,43.367,7.9\|AAOT,45.314,12.508\|MOBY,20.828,-157.193 |
+| Flag to trigger the publishing of Level 2 products generated | false |
 | Flag to extract POI reflectances | true |
 
 * Outputs specification
 
 | Output                                                             | Size |
 |--------------------------------------------------------------------|------|
+|MER_RR__1PNACR20060730_093546_000021432049_00480_23079_0000.dim.txt|2.04 KB|
+|MER_RR__1PRACR20030306_201313_000026082014_00243_05307_0000.dim.txt|1.51 KB|
+|MER_RR__1PRACR20040903_201756_000026282030_00057_13137_0000.dim.txt|1.49 KB|
+|MER_RR__1PRACR20050504_093419_000026382037_00022_16609_0000.dim.txt|1.94 KB|
+|MER_RR__1PRACR20070920_092716_000026302061_00437_29048_0000.dim.txt|2.03 KB|
+|MER_RR__1PRACR20080816_092020_000026302071_00165_33786_0000.dim.txt|1.77 KB|
 
 * Test pass/fail criteria
 
@@ -170,12 +195,15 @@ Invoke the application via the Dashboard with the parameters listed in the test 
 | End Time     | 2012-05-09T23:59:59Z |
 | Bounding Box | -180,90,180,-90 |
 | List of POI for reflectance extraction |CHINA,27,122\|CHINA2,30,124\|CHINA3,22,126 |
+| Flag to trigger the publishing of Level 2 products generated | false |
 | Flag to extract POI reflectances | true |
 
 * Outputs specification
 
 | Output                                                             | Size |
 |--------------------------------------------------------------------|------|
+|MER_FRS_1PPEPA20040711_020449_000002422028_00275_12353_1787.dim.txt|2.3 KB|
+|MER_FRS_1PPEPA20040717_021529_000002642028_00361_12439_1968.dim.txt|1.75 KB|
 
 * Test pass/fail criteria
 
