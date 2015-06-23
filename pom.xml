@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.terradue.ciop.app</groupId>
-	<artifactId>Participant-E</artifactId>
+	<artifactId>Participant-e</artifactId>
 	<packaging>rpm</packaging>
-	<name>participant-e</name>
+	<name>Participant-E</name>
 	<description>SEADAS with NCEP ancillary data</description>
 	<version>0.1</version>
 
