@@ -5,7 +5,7 @@
 	<groupId>com.terradue.ciop.app</groupId>
 	<artifactId>Participant-E</artifactId>
 	<packaging>rpm</packaging>
-	<name>Participant-E</name>
+	<name>participant-e</name>
 	<description>SEADAS with NCEP ancillary data</description>
 	<version>1.0</version>
 
