@@ -6,7 +6,7 @@
   <packaging>rpm</packaging>
   <name>Participant-E</name>
   <description>SEADAS with NCEP ancillary data</description>
-  <version>0.2</version>
+  <version>0.2-SNAPSHOT</version>
   <scm>
     <connection>scm:git:git@github.com:ocean-color-ac-challenge/Participant-E.git</connection>
     <developerConnection>scm:git:git@github.com:ocean-color-ac-challenge/Participant-E.git</developerConnection>
@@ -164,7 +164,7 @@ user_reference(env['USER'])
           </requires>
           <needarch>x86_64</needarch>
           <postinstallScriptlet>
-            <script><![CDATA[ echo -e "<?xml version='1.0' encoding='utf-8'?>\n<properties>\n\t<github_repository version='\${project.version}'>\${project.artifactId}</github_repository>\n</properties>" > /application/properties.xml ]]></script>
+            <script><![CDATA[ echo "<?xml version='1.0' encoding='utf-8'?><properties><github_repository version='${project.version}'>${project.artifactId}</github_repository></properties>" | xmllint --format - > /application/properties.xml ]]></script>
           </postinstallScriptlet>
         </configuration>
       </plugin>
