@@ -26,7 +26,7 @@ function cleanExit ()
     ${ERR_PCONVERT})  msg="Conversion to BEAM-DIMAP failed";;
     ${ERR_TAR})  msg="Compression of BEAM-DIMAP failed";;
     ${ERR_JAVAVERSION}) msg="The version of the JVM must be at least 1.7";;
-    ${ERR_NCEP}) msg="Error downloading NCEP files"
+    ${ERR_NCEP}) msg="Error downloading NCEP files";;
     *)    msg="Unknown error";;
   esac
 
@@ -126,11 +126,11 @@ EOF
     [ $? -ne 0 ] && {
       ciop-log "ERR" "couldn't find also $met2.bz2. aborting"
       exit ${ERR_NCEP}
-    } || {
-      bunzip2 ${myInput}/${met1}.bz2
-      rm -f ${myInput}/${met1}.bz2
     }
   }
+
+  bunzip2 ${myInput}/${met1}.bz2
+  rm -f ${myInput}/${met1}.bz2
 
   # met2
   wget -P ${myInput}/ ${ncepUrl}/$met2.bz2
@@ -142,11 +142,11 @@ EOF
     [ $? -ne 0 ] && {
       ciop-log "ERR" "couldn't find also $met2.bz2. aborting"
       exit ${ERR_NCEP}
-    } || {
-      bunzip2 ${myInput}/${met2}.bz2
-      rm -f ${myInput}/${met2}.bz2
     }
   }
+
+  bunzip2 ${myInput}/${met2}.bz2
+  rm -f ${myInput}/${met2}.bz2
  
   met3=${met2}
 
