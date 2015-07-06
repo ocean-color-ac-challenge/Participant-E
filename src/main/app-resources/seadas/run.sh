@@ -12,6 +12,7 @@ ERR_SEADAS=10
 ERR_PCONVERT=20
 ERR_TAR=30
 ERR_JAVAVERSION=15
+ERR_NCEP=35
 
 # add a trap to exit gracefully
 function cleanExit ()
@@ -25,6 +26,7 @@ function cleanExit ()
     ${ERR_PCONVERT})  msg="Conversion to BEAM-DIMAP failed";;
     ${ERR_TAR})  msg="Compression of BEAM-DIMAP failed";;
     ${ERR_JAVAVERSION}) msg="The version of the JVM must be at least 1.7";;
+    ${ERR_NCEP}) msg="Error downloading NCEP files";;
     *)    msg="Unknown error";;
   esac
 
@@ -113,14 +115,40 @@ EOF
     met2=N${year}${julian1}00_MET_NCEPN_6h.hdf
   }
   
+  # fix in order to handle N and R2 files (starting with N)
+  # met1
+  wget -P ${myInput}/ ${ncepUrl}/$met1.bz2
+  [ $? -ne 0 ] && {
+    # we try with the R2 file
+    ciop-log "WARN" "couldn't find $met1.bz2. trying R2"
+    met1=$( echo "${met1}" | sed 's#_NCEPN_#_NCEPR2_#g' )
+    wget -P ${myInput}/ ${ncepUrl}/$met1.bz2
+    [ $? -ne 0 ] && {
+      ciop-log "ERR" "couldn't find also $met2.bz2. aborting"
+      exit ${ERR_NCEP}
+    }
+  }
+
+  bunzip2 ${myInput}/${met1}.bz2
+  rm -f ${myInput}/${met1}.bz2
+
+  # met2
+  wget -P ${myInput}/ ${ncepUrl}/$met2.bz2
+  [ $? -ne 0 ] && {
+    # we try with the R2 file
+    ciop-log "WARN" "couldn't find $met2.bz2. trying R2"
+    met2=$( echo "${met2}" | sed 's#_NCEPN_#_NCEPR2_#g' )
+    wget -P ${myInput}/ ${ncepUrl}/$met2.bz2
+    [ $? -ne 0 ] && {
+      ciop-log "ERR" "couldn't find also $met2.bz2. aborting"
+      exit ${ERR_NCEP}
+    }
+  }
+
+  bunzip2 ${myInput}/${met2}.bz2
+  rm -f ${myInput}/${met2}.bz2
+ 
   met3=${met2}
-  
-  echo "${met1} ${met2}" | tr " " "\n" | while read met
-  do 
-    wget -P ${myInput}/ ${ncepUrl}/$met.bz2 
-    bunzip2 ${myInput}/$met.bz2
-    rm -f ${myInput}/$met.bz2
-  done
 
   O31=N${year}${julian}00_O3_TOMSOMI_24h.hdf
   O32=N${year}${julian1}00_O3_TOMSOMI_24h.hdf  
@@ -137,7 +165,10 @@ EOF
     ozone2=${myInput}/${O32} \
     ozone3=${myInput}/${O33}
 
-  [ $? -ne 0 ] && exit ${ERR_SEADAS}
+  [ $? -ne 0 ] && {
+      ciop-log "WARN" "error running the l2gen processor"
+      continue
+  }
 
   ciop-log "INFO" "Conversion to BEAM-DIMAP format"
   ${PATH_TO_SEADAS}/bin/pconvert.sh --outdir ${myOutput} ${l2output} 

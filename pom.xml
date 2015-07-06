@@ -6,7 +6,7 @@
   <packaging>rpm</packaging>
   <name>Participant-E</name>
   <description>SEADAS with NCEP ancillary data</description>
-  <version>0.2</version>
+  <version>0.3</version>
   <scm>
     <connection>scm:git:git@github.com:ocean-color-ac-challenge/Participant-E.git</connection>
     <developerConnection>scm:git:git@github.com:ocean-color-ac-challenge/Participant-E.git</developerConnection>
