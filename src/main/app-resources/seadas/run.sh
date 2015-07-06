@@ -165,7 +165,10 @@ EOF
     ozone2=${myInput}/${O32} \
     ozone3=${myInput}/${O33}
 
-  [ $? -ne 0 ] && exit ${ERR_SEADAS}
+  [ $? -ne 0 ] && {
+      ciop-log "WARN" "error running the l2gen processor"
+      continue
+  }
 
   ciop-log "INFO" "Conversion to BEAM-DIMAP format"
   ${PATH_TO_SEADAS}/bin/pconvert.sh --outdir ${myOutput} ${l2output} 
